@@ -2,21 +2,21 @@ package com.example.myapplication
 
 fun main() {
     val books = listOf(
-        Book(1, true, "Маугли", 200, "Джозеф Киплинг"),
-        Book(2, true, "Война и Мир", 1000, "Лев Толстой"),
-        Book(3, true, "Гордость и Предубеждение", 300, "Джейн Остин")
+        Book(1, true, "Маугли", 100, "Джозеф Киплинг"),
+        Book(2, true, "Бесы>", 1000, "Федор Достоевский"),
+        Book(3, true, "Три товарища", 450, "Эрих Мария Ремарк")
     )
 
     val newspapers = listOf(
-        Newspaper(4, true, "Сельская жизнь", 794),
-        Newspaper(5, true, "Городская жизнь", 123),
-        Newspaper(6, true, "Новости дня", 456)
+        Newspaper(4, true, "Правда", 794),
+        Newspaper(5, true, "Тайны вселенной", 123),
+        Newspaper(6, true, "Новости", 456)
     )
 
     val disks = listOf(
-        Disk(7, true, "Дэдпул и Росомаха", "DVD"),
-        Disk(8, true, "Терминатор", "CD"),
-        Disk(9, true, "Матрица", "DVD")
+        Disk(7, true, "Веном", "DVD"),
+        Disk(8, true, "Форсаж", "CD"),
+        Disk(9, true, "Марвел", "DVD")
     )
 
     while (true) {
