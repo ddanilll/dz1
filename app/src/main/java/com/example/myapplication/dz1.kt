@@ -3,7 +3,7 @@ package com.example.myapplication
 fun main() {
     val books = listOf(
         Book(1, true, "Маугли", 100, "Джозеф Киплинг"),
-        Book(2, true, "Бесы>", 1000, "Федор Достоевский"),
+        Book(2, true, "Бесы", 1000, "Федор Достоевский"),
         Book(3, true, "Три товарища", 450, "Эрих Мария Ремарк")
     )
 
