@@ -1,19 +1,13 @@
 package com.example.myapplication
 
 fun main() {
-    val books = listOf(
+    val librarySubject = listOf(
         Book(1, true, "Маугли", 100, "Джозеф Киплинг"),
         Book(2, true, "Бесы", 1000, "Федор Достоевский"),
-        Book(3, true, "Три товарища", 450, "Эрих Мария Ремарк")
-    )
-
-    val newspapers = listOf(
+        Book(3, true, "Три товарища", 450, "Эрих Мария Ремарк"),
         Newspaper(4, true, "Правда", 794),
         Newspaper(5, true, "Тайны вселенной", 123),
-        Newspaper(6, true, "Новости", 456)
-    )
-
-    val disks = listOf(
+        Newspaper(6, true, "Новости", 456),
         Disk(7, true, "Веном", "DVD"),
         Disk(8, true, "Форсаж", "CD"),
         Disk(9, true, "Марвел", "DVD")
@@ -26,65 +20,18 @@ fun main() {
         when (readlnOrNull()?.toIntOrNull()) {
             1 -> {
                 println("Cписок книг:")
-                showItems(books)
+                showItems(librarySubject.filterIsInstance<Book>())
             }
             2 -> {
                 println("Cписок газет:")
-                showItems(newspapers)
+                showItems(librarySubject.filterIsInstance<Newspaper>())
             }
             3 -> {
                 println("Cписок дисков:")
-                showItems(disks)
+                showItems(librarySubject.filterIsInstance<Disk>())
             }
             else -> println("Неправильный выбор. Пожалуйста, выберите снова.")
         }
-    }
-}
-
-open class Subject(
-    val id: Int,
-    var accessibility: Boolean,
-    val name: String
-) {
-    open fun printShortInfo(): String {
-        return "$name доступна: ${if (accessibility) "Да" else "Нет"}"
-    }
-    open fun printDetailedInfo(): String{
-        return ""
-    }
-}
-
-class Book (
-    id: Int,
-    accessibility: Boolean,
-    name: String,
-    val pages: Int,
-    val author: String
-): Subject(id, accessibility, name) {
-    override fun printDetailedInfo(): String {
-        return "книга: $name (${pages} стр.) автора: $author с id: $id доступна: ${if (accessibility) "Да" else "Нет"}"
-    }
-}
-
-class Newspaper (
-    id: Int,
-    accessibility: Boolean,
-    name: String,
-    val issueNumber: Int
-): Subject(id, accessibility, name) {
-    override fun printDetailedInfo(): String {
-        return "выпуск: $issueNumber газеты $name с id: $id доступен: ${if (accessibility) "Да" else "Нет"}"
-    }
-}
-
-class Disk (
-    id: Int,
-    accessibility: Boolean,
-    name: String,
-    val diskType: String
-): Subject(id, accessibility, name) {
-    override fun printDetailedInfo(): String {
-        return "$diskType $name доступен: ${if (accessibility) "Да" else "Нет"}"
     }
 }
 
@@ -121,35 +68,41 @@ fun showActions(item: Subject) {
 }
 
 fun takeHome(item: Subject) {
-    if (item is Book || item is Disk) {
-        if (item.accessibility) {
-            item.accessibility = false
-            println("Объект ${item::class.simpleName} с id ${item.id} взят домой.")
-        } else {
-            println("Объект недоступен для взятия домой.")
-        }
-    } else {
-        println("Газеты нельзя взять домой.")
-    }
+    handleAction(
+        item = item,
+        policy = { item.canTakeHome },
+        successMessage = "${item.getTypeName()} с id ${item.id} ${item.takeHomeAction()}",
+        errorMessage = "Нельзя взять домой"
+    )
 }
 
 fun readInHall(item: Subject) {
-    if (item is Book || item is Newspaper) {
-        if (item.accessibility) {
-            item.accessibility = false
-            println("Объект ${item::class.simpleName} с id ${item.id} взят в читальный зал.")
-        } else {
-            println("Объект недоступен для чтения в зале.")
-        }
+    handleAction(
+        item = item,
+        policy = { item.canReadInHall },
+        successMessage = "${item.getTypeName()} с id ${item.id} ${item.readInHallAction()}",
+        errorMessage = "Нельзя читать в зале"
+    )
+}
+
+private fun handleAction(
+    item: Subject,
+    policy: () -> Boolean,
+    successMessage: String,
+    errorMessage: String
+) {
+    if (item.accessibility && policy()) {
+        item.accessibility = false
+        println(successMessage)
     } else {
-        println("Диски нельзя читать в читальном зале.")
+        println(if (item.accessibility) errorMessage else "Объект недоступен")
     }
 }
 
 fun returnItem(item: Subject) {
     if (!item.accessibility) {
         item.accessibility = true
-        println("Объект ${item::class.simpleName} с id ${item.id} возвращен.")
+        println("Объект ${item.getTypeName()} с id ${item.id} возвращен.")
     } else {
         println("Объект уже доступен.")
     }
