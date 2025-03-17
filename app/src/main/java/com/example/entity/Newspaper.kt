@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.entity
 
 class Newspaper(
     id: Int, accessibility: Boolean, name: String, val issueNumber: Int

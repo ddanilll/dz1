@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.entity
 
 interface InLibraryUse {
     fun readInHallAction()

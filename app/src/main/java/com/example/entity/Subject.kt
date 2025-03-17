@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.entity
 
 abstract class Subject(
     val id: Int, var accessibility: Boolean, val name: String

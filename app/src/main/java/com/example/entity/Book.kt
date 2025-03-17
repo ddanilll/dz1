@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.entity
 
 class Book(
     id: Int, accessibility: Boolean, name: String, val pages: Int, val author: String
