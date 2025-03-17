@@ -1,5 +1,12 @@
 package com.example.myapplication
 
+import com.example.entity.Book
+import com.example.entity.Disk
+import com.example.entity.HomeLendable
+import com.example.entity.InLibraryUse
+import com.example.entity.Newspaper
+import com.example.entity.Subject
+
 fun main() {
     val librarySubject = listOf(
         Book(1, true, "Маугли", 100, "Джозеф Киплинг"),
