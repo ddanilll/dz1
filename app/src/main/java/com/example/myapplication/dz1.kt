@@ -22,14 +22,17 @@ fun main() {
                 println("Cписок книг:")
                 showItems(librarySubject.filterIsInstance<Book>())
             }
+
             2 -> {
                 println("Cписок газет:")
                 showItems(librarySubject.filterIsInstance<Newspaper>())
             }
+
             3 -> {
                 println("Cписок дисков:")
                 showItems(librarySubject.filterIsInstance<Disk>())
             }
+
             else -> println("Неправильный выбор. Пожалуйста, выберите снова.")
         }
     }
@@ -68,34 +71,26 @@ fun showActions(item: Subject) {
 }
 
 fun takeHome(item: Subject) {
-    handleAction(
-        item = item,
-        policy = { item.canTakeHome },
-        successMessage = "${item.getTypeName()} с id ${item.id} ${item.takeHomeAction()}",
-        errorMessage = "Нельзя взять домой"
-    )
+    when {
+        !item.accessibility -> println("Объект недоступен")
+        item is HomeLendable -> {
+            item.takeHomeAction()
+            println("${item.getTypeName()} с id ${item.id} взят домой")
+        }
+
+        else -> println("Нельзя взять домой")
+    }
 }
 
 fun readInHall(item: Subject) {
-    handleAction(
-        item = item,
-        policy = { item.canReadInHall },
-        successMessage = "${item.getTypeName()} с id ${item.id} ${item.readInHallAction()}",
-        errorMessage = "Нельзя читать в зале"
-    )
-}
+    when {
+        !item.accessibility -> println("Объект недоступен")
+        item is InLibraryUse -> {
+            item.readInHallAction()
+            println("${item.getTypeName()} с id ${item.id} взят в читальный зал")
+        }
 
-private fun handleAction(
-    item: Subject,
-    policy: () -> Boolean,
-    successMessage: String,
-    errorMessage: String
-) {
-    if (item.accessibility && policy()) {
-        item.accessibility = false
-        println(successMessage)
-    } else {
-        println(if (item.accessibility) errorMessage else "Объект недоступен")
+        else -> println("Нельзя читать в зале")
     }
 }
 
